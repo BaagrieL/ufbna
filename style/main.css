@@ -1,0 +1,65 @@
+body {
+    padding: 15px;
+    min-height: 85vh;
+}
+
+main {
+    padding: 15px;
+    min-height: 85vh;
+}
+
+.esquerda {
+    display: flex;
+    flex-direction: column;
+    width: 10vw;
+    margin-right: 100px;
+}
+
+.direita {
+    display: flex;
+    position: absolute;
+    right: 0;
+    top: 0;
+    flex-direction: column;
+    width: 70vw;
+    height: 80vh;
+}
+
+form {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 30px;
+}
+
+input {
+    border: 1px solid #000;
+    border-radius: 6px;
+}
+
+table {
+    justify-content: center;
+    margin: 30px;
+    background-color: #cacaca;
+}
+
+tr {
+    line-height: 30px;
+    text-align: center;
+}
+
+#titulo {
+    color: #fff;
+    background: #3d3d3d;
+}
+
+td {
+    text-align: center;
+    padding: 0 5px;
+    
+}
+
+

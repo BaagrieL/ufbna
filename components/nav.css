@@ -1,0 +1,21 @@
+header > nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 100px;
+    
+}
+
+header > nav > a {
+    color: azure;
+    text-decoration: none;
+    transition: all ease-out 0.2s;
+}
+
+nav > a:hover {
+    color: #2371ea;
+}
+
+i {
+    font-size: 20px;
+}

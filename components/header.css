@@ -1,0 +1,19 @@
+
+
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100vw;
+    height: 4rem;
+    background-color: #162e80;
+    padding: 0 60px;
+}   
+
+
+
+.info {
+    display: flex;
+    justify-content: center;
+    color: #f0ffff;
+}

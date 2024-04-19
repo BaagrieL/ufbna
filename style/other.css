@@ -1,0 +1,53 @@
+main {
+    position: relative;
+    padding: 15px;
+    min-height: 85vh;
+    
+}
+
+.hero_container {
+    position: relative;
+    width: 100vw;
+    height: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.hero_container h3 {
+    font-size: 35px;
+}
+
+.title {
+    display: flex;
+    position: absolute;
+    top: 30px;
+    transform: translateX(-50%);
+    align-items: center;
+
+}
+
+table {
+    position: absolute;
+    right: 50px;
+    justify-content: center;
+    margin: 30px;
+    background-color: #cacaca;
+}
+
+tr {
+    line-height: 30px;
+    text-align: center;
+}
+
+#titulo {
+    color: #fff;
+    background: #3d3d3d;
+}
+
+td {
+    text-align: center;
+    padding: 0 5px;
+    
+}
