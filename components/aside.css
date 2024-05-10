@@ -1,0 +1,17 @@
+aside {
+    grid-area: aside;
+    width: 100%;
+}
+
+ul {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    background-color: #F8F9FA;
+    border-radius: 0 5px 5px 0;
+}
+
+li {
+    padding: 10px;
+    text-align: center;
+}

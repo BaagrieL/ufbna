@@ -10,6 +10,7 @@ header > nav > a {
     color: azure;
     text-decoration: none;
     transition: all ease-out 0.2s;
+    font-size: 1.5rem;
 }
 
 nav > a:hover {

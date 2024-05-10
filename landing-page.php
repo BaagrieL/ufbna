@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="components/header.css">
     <link rel="stylesheet" href="components/nav.css">
     <link rel="stylesheet" href="components/footer.css">
+    <link rel="stylesheet" href="./style/landingpage.css">
     <title>Landing Page da Nossa Empresa</title>
 </head>
 <body>

@@ -18,7 +18,7 @@ class Artigo
     public function consultarArtigo()
     {
         try {
-            $cmd = $this->pdo->query("SELECT * FROM artigo ORDER BY id");
+            $cmd = $this->pdo->query("SELECT * FROM Artigo ORDER BY ArtigoID");
             $cmd->execute();
             $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
             return $res;

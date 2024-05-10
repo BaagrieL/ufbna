@@ -1,53 +1,46 @@
+html {
+    font-size: 62.5%;
+}
+
 main {
+    display: grid;
+    grid-template-areas: 
+                        "header header header header header header"
+                        "aside main main main main main"
+                        "aside main main main main main"
+                        "aside main main main main main";
+    grid-template-columns: repeat(6, 1fr);
+    grid-template-rows: 100px repeat(3, 1fr);
+    margin: 40px 0;
+    column-gap: 20px;
     position: relative;
-    padding: 15px;
-    min-height: 85vh;
-    
 }
 
 .hero_container {
-    position: relative;
-    width: 100vw;
-    height: auto;
+    grid-area: main;
     display: flex;
+    flex-direction: column;
     align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-}
-
-.hero_container h3 {
-    font-size: 35px;
+    padding: 0 50px;
+    gap: 50px;
+    
 }
 
 .title {
-    display: flex;
-    position: absolute;
-    top: 30px;
-    transform: translateX(-50%);
-    align-items: center;
-
-}
-
-table {
-    position: absolute;
-    right: 50px;
-    justify-content: center;
-    margin: 30px;
-    background-color: #cacaca;
-}
-
-tr {
-    line-height: 30px;
+    grid-area: header;
     text-align: center;
 }
 
-#titulo {
-    color: #fff;
-    background: #3d3d3d;
-}
-
-td {
-    text-align: center;
-    padding: 0 5px;
+.title h3 {
+    font-size: 3.9rem;
+    color: #3c3c3c;
     
+}
+
+.cards_container {
+    display: grid;
+    grid-template: auto / repeat(auto-fill, minmax(300px, 1fr));
+    width: 100%;
+    justify-content: center;
+    gap: 2.7rem;
 }

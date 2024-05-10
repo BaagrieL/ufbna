@@ -1,0 +1,77 @@
+body{
+    background-color: #f0ffff;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    gap: 50px;
+}
+
+section#historia{
+    background-color: #162e80;
+    color: #f0ffff;
+    font-size: medium;
+    border-radius: 10px;
+    padding: 15px;
+    width: 900px;
+    margin: auto;
+    box-shadow: 1px 1px 1px rgb(12, 12, 12);
+    
+}
+
+
+h2{
+    text-align: center;
+}
+section#missao
+{
+    background-color: #162e80;
+    color: #f0ffff;
+    font-size: medium;
+    border-radius: 10px;
+    padding: 15px;
+    width: 900px;
+    margin: auto;
+    box-shadow: 1px 1px 1px #000000;
+    
+}
+
+section#valores
+{
+    background-color: #162e80;
+    
+    border-radius: 10px;
+    padding: 15px;
+    width: 900px;
+    margin: auto;
+    box-shadow: 1px 1px 1px rgb(12, 12, 12);
+   
+   
+}
+section#valores p
+{
+    color: #f0ffff;
+    font-size: medium;
+   
+}
+
+
+section#visao
+{
+    background-color: #162e80; 
+    font-size: medium;
+    border-radius: 10px;
+    padding: 15px;
+    width: 900px;
+    margin: auto;
+    box-shadow: 1px 1px 1px rgb(12, 12, 12);
+    
+}
+section#visao p
+{
+    color: #f0ffff;
+    font-size: medium;
+   
+}
+

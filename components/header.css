@@ -1,19 +1,22 @@
+:root {
+    --cor-do-fundo: #162e80;
+    --cor-de-destaque: #f0ffff;
 
+}
 
 header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     width: 100vw;
-    height: 4rem;
-    background-color: #162e80;
+    height: 7rem;
+    background-color: var(--cor-do-fundo);
     padding: 0 60px;
-}   
-
-
+}
 
 .info {
     display: flex;
     justify-content: center;
-    color: #f0ffff;
+    color: var(--cor-de-destaque);
+    font-size: 2rem;
 }
