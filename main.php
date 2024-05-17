@@ -36,6 +36,7 @@ $excluirChaves = array("ArtigoID", "ResumoArtigo", "TextoArtigo",  "DataRecepcao
         <div class="title">
             <h3>Artigos recentes</h3>
         </div>
+        
         <?php include_once 'components/aside.php'; ?>
 
         <div class="hero_container">

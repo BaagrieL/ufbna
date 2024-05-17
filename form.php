@@ -1,6 +1,6 @@
 <?php
 require_once 'select.php';
-$aluno = new Aluno("UFBNA", "localhost", "root", "Bagriel#2006");
+$aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 ?>
 
 <!DOCTYPE html>
@@ -38,17 +38,18 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "Bagriel#2006");
                     for ($i = 0; $i < count($dados); $i++) {
                         echo "<tr>";
                         foreach ($dados[$i] as $k => $v) {
-                            if ($k != "id") {
+                            if ($k != "AutorID") {
                                 echo "<td>".$v."</td>";
-                            }
-                        }
-            ?>
+                                
+                            
+                        ?>
                         <td>
-                            <button href="form.php?id=<?php $dados[$i]['id'];?>">Editar</button> 
-                            <button href="">Excluir</button>
+                            <button href="form.php?id=<?php $dados[$i]['AutorID'];?>">Editar</button> 
+                            <button href="formArtigo.php?id=<?php $dados[$i]['id'];?>">Excluir</button>
                         </td>
             <?php
-
+                    }
+                } 
 
                         echo "</tr>";    
                     }

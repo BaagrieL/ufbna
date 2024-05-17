@@ -7,9 +7,9 @@
 
 <body>
     <nav>
-        <a href=""><i class="bi bi-house"></i> </a>
-        <a href="">Conheça-nos</a>
-        <a href="">Inscreva-se</a>
+        <a href="./main.php"><i class="bi bi-house"></i> </a>
+        <a href="./landing-page.php">Conheça-nos</a>
+        <a href="./inscreva-se.php">Inscreva-se</a>
     </nav>
 </body>
 

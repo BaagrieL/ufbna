@@ -6,7 +6,7 @@
     <header>
         <div class="info">
             <img src="#" alt="">
-            <h2>UFBNA</h2>
+            <h2 class="page-title">UFBNA</h2>
         </div>
         <?php include_once 'nav.php';?>
     </header>

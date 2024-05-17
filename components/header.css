@@ -14,6 +14,10 @@ header {
     padding: 0 60px;
 }
 
+.page-title{
+    color: var(--cor-de-destaque);
+}
+
 .info {
     display: flex;
     justify-content: center;

@@ -1,5 +1,5 @@
 <?php
-class Aluno
+class Professor
 {
     protected $pdo;
 
@@ -17,10 +17,10 @@ class Aluno
     }
 
 
-    public function consultarAluno()
+    public function consultarProfessor()
     {
         try {
-            $cmd = $this->pdo->query("SELECT * FROM Autor ORDER BY NomeAutor");
+            $cmd = $this->pdo->query("SELECT * FROM Professor ORDER BY NomeProfessor");
             $cmd->execute();
             $res = $cmd->fetchAll(PDO::FETCH_ASSOC);
             return $res;
@@ -33,10 +33,10 @@ class Aluno
         }
     }
 
-    public function inserirAluno($nome, $email) {
+    public function inserirProfessor($nome, $email) {
 
         try {
-            $ras = $this->pdo->prepare("INSERT INTO Autor (NomeAutor, EmailAutor) VALUES (:n, :e)");
+            $ras = $this->pdo->prepare("INSERT INTO Professor (NomeProfessor, EmailProfessor) VALUES (:n, :e)");
 
             $ras->bindParam(':n', $nome);
             $ras->bindValue(':e', $email);
@@ -54,7 +54,7 @@ class Aluno
         }
     }
 
-    public function excluirAluno($idAluno)
+    public function excluirProfessor($idAluno)
     {
         try {
             $cmd = $this->pdo->prepare("DELETE FROM ALUNO WHERE id = :i");
