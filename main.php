@@ -52,10 +52,7 @@ $excluirChaves = array("ArtigoID", "ResumoArtigo", "TextoArtigo",  "DataRecepcao
                             if ($k === "TituloArtigo") {
                                 echo "<a href=''>" . $v . "</a>";
                             }
-                            // if ($k != "id" & $k != "texto" & $k != "dataRecepcao" & $k != "nota" & $k != "resumo" & $k != "titulo") {
-
-                            //     echo "<p>" . $v . "</p>";
-                            // }
+                            
                             if (!in_array($k, $excluirChaves)) {
                                 echo "<p>" . $v . "</p>";
                             }

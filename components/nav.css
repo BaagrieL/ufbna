@@ -18,5 +18,9 @@ nav > a:hover {
 }
 
 i {
-    font-size: 20px;
+    font-size: 2rem;
+}
+
+header > nav > a:last-child > i {
+    font-size: 2.5rem;
 }

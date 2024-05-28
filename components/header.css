@@ -4,6 +4,10 @@
 
 }
 
+a{
+    text-decoration: none;
+}
+
 header {
     display: flex;
     align-items: center;
@@ -16,6 +20,8 @@ header {
 
 .page-title{
     color: var(--cor-de-destaque);
+    font-size: 3rem;
+
 }
 
 .info {

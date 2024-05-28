@@ -1,5 +1,5 @@
 <?php
-require_once 'select.php';
+require_once 'autor_class.php';
 require_once 'professor_class.php';
 
 $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
@@ -42,7 +42,7 @@ $professor = new Professor("UFBNA", "localhost", "root", "123456");
                     <input name="aluno-email" type="email" placeholder="E-mail">
                 </div>
 
-                <button type="submit">Enviar</button>
+                <button class="button-enviar" type="submit">Enviar</button>
             </form>
             <form id="professor-form" action="inscreva-se.php" method="POST">
                 <h2>Formulário do Professor</h2>
@@ -50,23 +50,32 @@ $professor = new Professor("UFBNA", "localhost", "root", "123456");
                     <input name="professor-name" type="text" placeholder="Nome">
                     <input name="professor-email" type="email" placeholder="E-mail">
                 </div>
-                <button type="submit">Enviar</button>
+
+                <button class="button-enviar" type="submit">Enviar</button>
             </form>
             <?php
-            require_once('./select.php');
+            require_once('./autor_class.php');
 
             if ($_SERVER['REQUEST_METHOD'] === "POST") {
-                
+
                 if (isset($_POST['aluno-name'])) {
 
                     $nome = $_POST['aluno-name'];
                     $email = $_POST['aluno-email'];
 
                     try {
-                        $aluno->inserirAluno($nome, $email);
-                        header("location: " . $_SERVER['PHP_SELF']);
+
+                        if ($aluno->inserirAluno($nome, $email) == true) {
+                            echo "<script>
+                                    setTimeout(function() {
+                                    window.location.href = 'main.php';
+                                    }, 1000);
+                                </script>";
+                        } else {
+                            echo "<h3>insira todos os campos</h3>";
+                        }
+
                         exit();
-                
                     } catch (PDOException $e) {
                         echo "Erro no BD " . $e->getMessage();
                         exit();
@@ -77,12 +86,15 @@ $professor = new Professor("UFBNA", "localhost", "root", "123456");
 
                     $nome = $_POST['professor-name'];
                     $email = $_POST['professor-email'];
-                    
+
                     try {
                         $professor->inserirProfessor($nome, $email);
-                        header("location: " . $_SERVER['PHP_SELF']);
+                        echo "<script>
+                                    setTimeout(function() {
+                                    window.location.href = 'main.php';
+                                    }, 1000);
+                                </script>";
                         exit();
-                
                     } catch (PDOException $e) {
                         echo "Erro no BD " . $e->getMessage();
                         exit();
@@ -92,8 +104,6 @@ $professor = new Professor("UFBNA", "localhost", "root", "123456");
                 } else {
                     echo "deu pau :/";
                 }
-            
-            
             }
 
             ?>
@@ -107,6 +117,7 @@ $professor = new Professor("UFBNA", "localhost", "root", "123456");
         const professorButton = document.getElementById('professor-button');
         const alunoForm = document.getElementById('aluno-form');
         const professorForm = document.getElementById('professor-form');
+        const buttonEnviar = document.querySelectorAll('.button-enviar');
 
         alunoButton.addEventListener('click', () => {
             alunoForm.classList.add('active-form');

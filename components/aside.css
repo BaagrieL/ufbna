@@ -1,10 +1,14 @@
 aside {
     grid-area: aside;
+    max-height: 462px;
+    position: sticky;
+    top: 30px;   
 }
 
 ul {
     flex: 1 1 auto;
     height: 95%;
+    max-height: 95%;
     display: flex;
     flex-direction: column;
     justify-content: space-evenly;

@@ -1,72 +1,13 @@
 .footer {
-    background-color: #162e80;
+    display: flex;
+    justify-content: space-between;
+    background-color: #162E80;
     width: 100%;
     height: 100%;
-    float: left;
-    font-size: 18px;
     padding: 50px 10px 50px 10px;
 
 }
-
-.footer .left {
-
-    width: 100%;
-    float: left;
-    border-bottom: 1px #222424 solid;
-    border-right: 0;
-    margin-bottom: 20px;
-    padding-bottom: 20px;
-}
-
-.footer .title-footer {
-
-    color: #ffffff;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: initial;
-    font-size: 26px;
-    width: 100%;
-    float: left;
-    margin-bottom: 15px;
-
-}
-
-.footer .title-footer span {
-
-    color: #2fcacf;
-    font-family: 'DM Sans', sans-serif;
-    font-weight: bold;
-
-}
-
 /* Footer links */
-
-.footer .links {
-
-    width: 100%;
-    float: left;
-    color: #ffffff;
-    margin-bottom: 20px;
-    padding: 0;
-
-}
-
-.footer .links a {
-
-    display: block;
-    line-height: 33px;
-    text-decoration: none;
-    color: #fff;
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    transition: 0.3s;
-
-
-}
-
-.footer .links a:hover {
-    color: #2fcacf;
-}
-
 .footer .Copyright {
 
     font-family: 'DM Sans', sans-serif;
@@ -110,21 +51,6 @@
 
 /*Right*/
 
-.footer .right {
-    width: 100%;
-    float: left;
-}
-
-.footer .right p {
-
-    font-family: 'DM Sans', sans-serif;
-    font-weight: initial;
-    display: inline-block;
-    vertical-align: top;
-    font-size: 30px;
-    color: #ffffff;
-
-}
 
 
 /*Responsive*/

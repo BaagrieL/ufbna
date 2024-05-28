@@ -1,0 +1,14 @@
+main {
+    display: flex;
+}
+
+.esquerda {
+    width: 25%;
+    padding: 20px;
+}
+
+/* Estilo para a div da direita */
+.direita {
+    flex: 1 1 auto;
+    padding: 20px;
+}

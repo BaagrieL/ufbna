@@ -1,5 +1,5 @@
 <?php
-require_once 'select.php';
+require_once 'autor_class.php';
 $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 ?>
 
@@ -10,55 +10,66 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>form UFBNA</title>
-    <link rel="stylesheet" href="./style/main.css">
+    <link rel="stylesheet" href="./style/userControl.css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body>
 
-    <div class="esquerda">
-        <form action="form.php" method="post">
-            <input type="text" name="name">
-            <input type="email" name="email" id="email">
-            <input type="submit" value="enviar">
-        </form>
-    </div>
-
-    <div class="direita">
-        <table>
-            <tr id="titulo">
-                <td>nome</td>
-                <td>email</td>
-                <td></td>
-            </tr>
-
-            <?php
-            $dados = $aluno->consultarAluno();
-
-                if (count($dados) > 0) {
-                    for ($i = 0; $i < count($dados); $i++) {
-                        echo "<tr>";
-                        foreach ($dados[$i] as $k => $v) {
-                            if ($k != "AutorID") {
-                                echo "<td>".$v."</td>";
-                                
-                            
-                        ?>
-                        <td>
-                            <button href="form.php?id=<?php $dados[$i]['AutorID'];?>">Editar</button> 
-                            <button href="formArtigo.php?id=<?php $dados[$i]['id'];?>">Excluir</button>
-                        </td>
-            <?php
+    <main>
+        <div class="esquerda">
+            <form action="form.php" method="POST" class="form-select">
+                <div class="input-group mb-3">
+                    <input name="name" type="text" class="form-control" placeholder="Nome" aria-label="Username">
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">@</span>
+                    <input name="email" type="text" class="form-control" placeholder="Email" aria-label="Server">
+                </div>
+                <input class="btn btn-primary" type="submit" value="enviar">
+            </form>
+        </div>
+        <div class="direita">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr id="titulo">
+                        <th scope="col">nome</th>
+                        <th scope="col">email</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+                    $dados = $aluno->consultarAluno();
+                    if (count($dados) > 0) {
+                        for ($i = 0; $i < count($dados); $i++) {
+                            echo "<tr>";
+                            foreach ($dados[$i] as $k => $v) {
+                                // if ($k != "AutorID") {
+                                echo "<td>" . ($v) . "</td>";
+                                // }
+                            }
+                    ?>
+                            <td>
+                                <a href="form.php?id=<?php echo ($dados[$i]['AutorID']); ?>&nome=<?php echo ($dados[$i]['NomeAutor']); ?>">Excluir</a>
+                                <a href="form.php?id_up=<?php echo ($dados[$i]['AutorID']); ?>>&nome=<?php echo ($dados[$i]['NomeAutor']); ?>>&email=<?php echo ($dados[$i]['EmailAutor']); ?>">Editar</a>
+                            </td>
+                    <?php
+                            echo "</tr>";
+                        }
+                    } else { // O banco está vazio
+                        echo "Ainda não há pessoas cadrastadas!";
                     }
-                } 
+                    ?>
 
-                        echo "</tr>";    
-                    }
-                }
-            ?>
-        
-        </table>
+                </tbody>
+            </table>
+        </div>
+    </main>
 
-    </div>
+    <dialog>
+
+    </dialog>
 
 </body>
 
@@ -66,20 +77,67 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 
 
 <?php
-require_once ('./select.php');
+require_once('./autor_class.php');
+
+// ------------------EXCLUIR----------------------
+if (isset($_GET["id"])) {
+    $idAluno = addslashes($_GET["id"]);
+    $nomeAluno = addslashes($_GET["nome"]);
+
+    echo "
+        <script type='text/javascript'>
+            if (window.confirm('Quer mesmo EXCLUIR $nomeAluno?')) {
+                console.log('foi id: $idAluno');
+
+                " . $aluno->excluirAluno($idAluno) . "
+
+                window.location.href = 'form.php';
+
+            }
+
+
+        </script>
+    ";
+}
 
 
 
+// ------------------EDITAR----------------------
+if (isset($_GET['id_up']) && !empty($_GET['id_up'])) {
+    $id_upd = addslashes($_GET['id_up']);
+    $nome = addslashes($_POST['name']);
+    $email = addslashes($_POST['email']);
+
+    echo "
+        <script type='text/javascript'>
+            document.querySelector('input[name]').value = $nome;
+            document.querySelector('input[email]').value = $email;
+        </script>
+    ";
+
+    if (!empty($nome) && !empty($email)) {
+        $aluno->editarAluno($id_up, $nome, $email);
+        header("location: " . $_SERVER['PHP_SELF']);
+    }
+}
+
+
+// ------------------INSERIR----------------------
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     $nome = $_POST['name'];
     $email = $_POST['email'];
 
 
     try {
-        $aluno->inserirAluno($nome, $email);
-        header("location: " . $_SERVER['PHP_SELF']);
-        exit();
+        if($aluno->inserirAluno($nome, $email)){
+            echo "
+            <script type='text/javascript'>
+                    window.location.href = 'form.php';
+            </script>
+            ";
+        }
 
+        exit();
     } catch (PDOException $e) {
         echo "Erro no BD " . $e->getMessage();
         exit();
