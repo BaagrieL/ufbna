@@ -20,11 +20,11 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
         <div class="esquerda">
             <form action="form.php" method="POST" class="form-select">
                 <div class="input-group mb-3">
-                    <input name="name" type="text" class="form-control" placeholder="Nome" aria-label="Username">
+                    <input id="input-name" name="name" type="text" class="form-control" placeholder="Nome" aria-label="Username" value="<?php if(isset($_GET["id_up"])){echo $_GET['nome'];} ?>">
                 </div>
                 <div class="input-group mb-3">
                     <span class="input-group-text">@</span>
-                    <input name="email" type="text" class="form-control" placeholder="Email" aria-label="Server">
+                    <input id="input-email" name="email" type="text" class="form-control" placeholder="Email" aria-label="Server" value="<?php if(isset($_GET["id_up"])){echo $_GET['email'];} ?>">
                 </div>
                 <input class="btn btn-primary" type="submit" value="enviar">
             </form>
@@ -52,7 +52,8 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
                     ?>
                             <td>
                                 <a href="form.php?id=<?php echo ($dados[$i]['AutorID']); ?>&nome=<?php echo ($dados[$i]['NomeAutor']); ?>">Excluir</a>
-                                <a href="form.php?id_up=<?php echo ($dados[$i]['AutorID']); ?>>&nome=<?php echo ($dados[$i]['NomeAutor']); ?>>&email=<?php echo ($dados[$i]['EmailAutor']); ?>">Editar</a>
+                                <a href="form.php?id_up=<?php echo $dados[$i]['AutorID']; ?>&nome=<?php echo $dados[$i]['NomeAutor']; ?>&email=<?php echo $dados[$i]['EmailAutor']; ?>">Editar</a>
+
                             </td>
                     <?php
                             echo "</tr>";
@@ -125,24 +126,24 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['id'])) {
 
 
 // ------------------EDITAR----------------------
-if (isset($_GET['id_up']) && !empty($_GET['id_up'])) {
-    $id_upd = addslashes($_GET['id_up']);
-    $nome = addslashes($_POST['name']);
+if(isset($_GET['id_up']) && !empty($_GET['id_up'])){
+    $id_up = addslashes($_GET['id_up']);
+    $nome = addslashes($_POST['nome']);
     $email = addslashes($_POST['email']);
 
-    echo "
-        <script type='text/javascript'>
-            document.querySelector('input[name]').value = $nome;
-            document.querySelector('input[email]').value = $email;
-        </script>
-    ";
+    if (!empty($nome) && !empty($email)) { 
+        $aluno->editarAluno($id_up ,$nome, $email);
+        echo "
+            <script type='text/javascript'>
+                    window.location.href = 'form.php';
+            </script>
+            ";
+        
+    } else {
+        echo "Preencha todos os campos";
+    } 
 
-    if (!empty($nome) && !empty($email)) {
-        $aluno->editarAluno($id_up, $nome, $email);
-        header("location: " . $_SERVER['PHP_SELF']);
-    }
 }
-
 
 // ------------------INSERIR----------------------
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
