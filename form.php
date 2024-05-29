@@ -86,18 +86,40 @@ if (isset($_GET["id"])) {
 
     echo "
         <script type='text/javascript'>
-            if (window.confirm('Quer mesmo EXCLUIR $nomeAluno?')) {
-                console.log('foi id: $idAluno');
+            let idAluno = " . (isset($idAluno) ? $idAluno : 'null') . ";
+            let nomeAluno = '" . (isset($nomeAluno) ? $nomeAluno : '') . "';
 
-                " . $aluno->excluirAluno($idAluno) . "
+            if (idAluno !== null && window.confirm('Quer mesmo EXCLUIR ' + nomeAluno + '?')) {
+                console.log('foi id: ' + idAluno);
 
-                window.location.href = 'form.php';
-
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', 'form.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            console.log('ok');
+                            window.location.href = 'form.php';
+                        } else {
+                            console.error('Erro ao excluir aluno');
+                        }
+                    }
+                };
+                xhr.send('id=' + idAluno);
+            } else {
+                console.log('Não excluído');
             }
-
-
         </script>
     ";
+}
+
+if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['id'])) {
+    $id = $_POST['id'];
+
+    $aluno->excluirAluno($id);
+} else {
+    echo "Erro: ID do aluno não fornecido.";
+    exit;
 }
 
 
@@ -129,7 +151,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
 
 
     try {
-        if($aluno->inserirAluno($nome, $email)){
+        if ($aluno->inserirAluno($nome, $email)) {
             echo "
             <script type='text/javascript'>
                     window.location.href = 'form.php';
