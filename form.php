@@ -4,7 +4,7 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <head>
     <meta charset="UTF-8">
@@ -18,14 +18,20 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 
     <main>
         <div class="esquerda">
-            <form action="form.php" method="POST" class="form-select">
+            <form action="form.php" method="POST" class="form-control">
                 <div class="input-group mb-3">
-                    <input id="input-name" name="name" type="text" class="form-control" placeholder="Nome" aria-label="Username" value="<?php if(isset($_GET["id_up"])){echo $_GET['nome'];} ?>">
+                    <input id="input-name" name="name" type="text" class="form-control" placeholder="Nome" value="<?php if (isset($_GET["id_up"])) {
+                                                                                                                        echo $_GET['nome'];
+                                                                                                                    } ?>">
                 </div>
                 <div class="input-group mb-3">
-                    <span class="input-group-text">@</span>
-                    <input id="input-email" name="email" type="text" class="form-control" placeholder="Email" aria-label="Server" value="<?php if(isset($_GET["id_up"])){echo $_GET['email'];} ?>">
+                    <input id="input-email" name="email" type="email" class="form-control" placeholder="Email" value="<?php if (isset($_GET["id_up"])) {
+                                                                                                                            echo $_GET['email'];
+                                                                                                                        } ?>">
                 </div>
+                <input type="hidden" name="id_up" value="<?php if (isset($_GET["id_up"])) {
+                                                                echo $_GET['id_up'];
+                                                            } ?>">
                 <input class="btn btn-primary" type="submit" value="enviar">
             </form>
         </div>
@@ -33,44 +39,141 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
             <table class="table table-striped table-hover">
                 <thead>
                     <tr id="titulo">
+                        <th scope="col"><input type="checkbox" id="select-all"></th>
+                        <th scope="col">id</th>
                         <th scope="col">nome</th>
                         <th scope="col">email</th>
                         <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php
-                    $dados = $aluno->consultarAluno();
-                    if (count($dados) > 0) {
-                        for ($i = 0; $i < count($dados); $i++) {
-                            echo "<tr>";
-                            foreach ($dados[$i] as $k => $v) {
-                                // if ($k != "AutorID") {
-                                echo "<td>" . ($v) . "</td>";
-                                // }
+                    <form id="bulk-delete-form">
+                        <?php
+                        $dados = $aluno->consultarAluno();
+                        if (count($dados) > 0) {
+                            for ($i = 0; $i < count($dados); $i++) {
+                                echo "<tr>";
+                                echo '<td><input type="checkbox" name="ids[]" value="' . $dados[$i]['AutorID'] . '"></td>';
+                                foreach ($dados[$i] as $k => $v) {
+                                    echo "<td>" . ($v) . "</td>";
+                                }
+                                echo '<td>';
+                                echo '<a href="#" onclick="excluirAluno(' . ($dados[$i]['AutorID']) . ', \'' . ($dados[$i]['NomeAutor']) . '\')">Excluir</a>';
+                                echo '</td>';
+                                echo '<td>';
+                                echo '<a href="form.php?id_up=' . $dados[$i]['AutorID'] . '&nome=' . $dados[$i]['NomeAutor'] . '&email=' . $dados[$i]['EmailAutor'] . '">Editar</a>';
+                                echo '</td>';
+                                echo '</tr>';
                             }
-                    ?>
-                            <td>
-                                <a href="form.php?id=<?php echo ($dados[$i]['AutorID']); ?>&nome=<?php echo ($dados[$i]['NomeAutor']); ?>">Excluir</a>
-                                <a href="form.php?id_up=<?php echo $dados[$i]['AutorID']; ?>&nome=<?php echo $dados[$i]['NomeAutor']; ?>&email=<?php echo $dados[$i]['EmailAutor']; ?>">Editar</a>
-
-                            </td>
-                    <?php
-                            echo "</tr>";
+                        } else {
+                            echo "Ainda não há pessoas cadastradas!";
                         }
-                    } else { // O banco está vazio
-                        echo "Ainda não há pessoas cadrastadas!";
-                    }
-                    ?>
-
+                        ?>
+                    </form>
                 </tbody>
             </table>
+            <button class="btn btn-danger">Excluir Selecionados</button>
+
+
         </div>
     </main>
 
-    <dialog>
+    <script type="text/javascript">
+        // Função de validação para o primeiro formulário
+        function validarCampoVazio(event) {
+            const nome = document.getElementById('input-name').value;
+            const email = document.getElementById('input-email').value;
+            if (!nome || !email) {
+                alert("Por favor, preencha todos os campos.");
+                event.preventDefault(); // Previne o envio do formulário
+            }
+        }
 
-    </dialog>
+
+        function validarCheckbox(event) {
+            const checkboxes = document.querySelectorAll('input[name="ids[]"]:checked');
+            if (checkboxes.length === 0) {
+                alert("Por favor, selecione pelo menos um registro para excluir.");
+                event.preventDefault(); // Previne o envio do formulário
+            } else {
+                excluirEmMassa();
+            }
+
+
+        }
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // validação no formulário 
+            const primeiroFormulario = document.querySelector('.form-control');
+            primeiroFormulario.addEventListener('submit', validarCampoVazio);
+
+            // validação no botão de exclusão em massa
+            const botaoExcluir = document.querySelector('.btn.btn-danger');
+            botaoExcluir.addEventListener('click', validarCheckbox);
+        });
+
+        // ------------------SCRIPT DE EXCLUSÃO----------------------
+        function excluirAluno(id, nome) {
+            if (confirm('Quer mesmo EXCLUIR ' + nome + '?')) {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', 'form.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            window.location.href = 'form.php';
+                        } else {
+                            console.error('Erro ao excluir aluno');
+                        }
+                    }
+                };
+                xhr.send('idEx=' + id);
+            }
+        }
+
+        function excluirEmMassa() {
+            const checkboxes = document.querySelectorAll('input[name="ids[]"]:checked');
+            let ids = [];
+            checkboxes.forEach(checkbox => {
+                ids.push(checkbox.value);
+            });
+
+            if (confirm('Quer mesmo EXCLUIR ' + checkboxes.length + ' registros?')) {
+                let xhr = new XMLHttpRequest();
+                xhr.open('POST', 'form.php', true);
+                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                xhr.onreadystatechange = function() {
+                    if (xhr.readyState === XMLHttpRequest.DONE) {
+                        if (xhr.status === 200) {
+                            window.location.href = 'form.php';
+                        } else {
+                            console.error('Erro ao excluir aluno');
+                        }
+                    }
+                };
+                xhr.send('ids=' + JSON.stringify(ids));
+
+            }
+        }
+
+
+        document.getElementById('select-all').addEventListener('click', toggleCheckboxes);
+
+        document.getElementById('select-all').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault();
+                toggleCheckboxes.call(this);
+            }
+        });
+
+        function toggleCheckboxes() {
+            let checkboxes = document.querySelectorAll('input[name="ids[]"]');
+            for (let checkbox of checkboxes) {
+                checkbox.checked = this.checked;
+            }
+        }
+    </script>
+
 
 </body>
 
@@ -81,154 +184,137 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 require_once('./autor_class.php');
 
 // ------------------EXCLUIR----------------------
-if (isset($_GET["id"])) {
-    $idAluno = addslashes($_GET["id"]);
-    $nomeAluno = addslashes($_GET["nome"]);
+if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['idEx'])) {
+    $id = $_POST['idEx'];
 
-    echo "
-        <script type='text/javascript'>
-            let idAluno = " . (isset($idAluno) ? $idAluno : 'null') . ";
-            let nomeAluno = '" . (isset($nomeAluno) ? $nomeAluno : '') . "';
-
-            if (idAluno !== null && window.confirm('Quer mesmo EXCLUIR ' + nomeAluno + '?')) {
-                console.log('foi id: ' + idAluno);
-
-                let xhr = new XMLHttpRequest();
-                xhr.open('POST', 'form.php', true);
-                xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-                xhr.onreadystatechange = function() {
-                    if (xhr.readyState === XMLHttpRequest.DONE) {
-                        if (xhr.status === 200) {
-                            console.log('ok');
-                            window.location.href = 'form.php';
-                        } else {
-                            console.error('Erro ao excluir aluno');
-                        }
-                    }
-                };
-                xhr.send('id=' + idAluno);
-            } else {
-                console.log('Não excluído');
-            }
-        </script>
-    ";
-}
-
-if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['id'])) {
-    $id = $_POST['id'];
-
-    $aluno->excluirAluno($id);
-} else {
-    echo "Erro: ID do aluno não fornecido.";
-    exit;
+    if (!empty($id)) {
+        $aluno->excluirAluno($id);
+        echo "Aluno excluído com sucesso";
+    } else {
+        echo "Erro: ID do aluno não fornecido.";
+    }
 }
 
 
+// ---------------EXCLUIR EM MASSA ------------------
+if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['ids'])) {
+    $ids = json_decode($_POST['ids'], true);
 
-// ------------------EDITAR----------------------
-if(isset($_GET['id_up']) && !empty($_GET['id_up'])){
-    $id_up = addslashes($_GET['id_up']);
-    $nome = addslashes($_POST['nome']);
-    $email = addslashes($_POST['email']);
-
-    if (!empty($nome) && !empty($email)) { 
-        $aluno->editarAluno($id_up ,$nome, $email);
+    if (!empty($ids)) {
+        foreach ($ids as $id) {
+            $aluno->excluirAluno($id);
+        }
         echo "
             <script type='text/javascript'>
-                    window.location.href = 'form.php';
+                window.location.href = 'form.php';
             </script>
-            ";
-        
+        ";
     } else {
-        echo "Preencha todos os campos";
-    } 
-
-}
-
-// ------------------INSERIR----------------------
-if ($_SERVER['REQUEST_METHOD'] === "POST") {
-    $nome = $_POST['name'];
-    $email = $_POST['email'];
-
-
-    try {
-        if ($aluno->inserirAluno($nome, $email)) {
-            echo "
-            <script type='text/javascript'>
-                    window.location.href = 'form.php';
-            </script>
-            ";
-        }
-
-        exit();
-    } catch (PDOException $e) {
-        echo "Erro no BD " . $e->getMessage();
-        exit();
-    } catch (Exception $e) {
-        echo "Erro genérico " . $e->getMessage();
+        echo "Nenhum registro selecionado para exclusão.";
     }
-
-
-    // ---------------------- Insert ----------------------------
-
-    // try {
-    //     $ras = $pdo->prepare('INSERT INTO ALUNO(nome, email) VALUES (:n, :e)');
-
-    //     $ras->bindParam(':n', $nome);
-    //     $ras->bindValue(':e', $email);
-
-    //     $ras->execute();
-    // } catch (PDOException $e) {
-    //     echo "Erro ao inserir dados: " . $e->getMessage();
-    // } catch (Exception $e) {
-    //     echo "Erro genérico " . $e->getMessage();
-    // }
-
-
-
-    // --------------------- Delete -------------------------------
-
-    // if  (isset($_GET["id"])) {
-    //     $idAluno = addslashes( $_GET["id"]);
-    //     $aluno->excluirAluno($idAluno);
-    // }  
-
-    // try {
-    //     $cmd = $pdo->prepare("DELETE FROM ALUNO WHERE nome = :n");
-    //     $cmd->bindParam(":n", $nome);
-    //     $cmd->execute();
-    //     echo"$nome Deletado(a)";
-    // }
-
-    // catch (PDOException $e) {
-    //     echo "Erro ao deletar ". $e->getMessage();
-    //     exit();
-    // }
-
-    // catch (Exception $e) {
-    //     echo "Erro genérico ". $e->getMessage();
-    // }
-
-
-    // --------------------- Update --------------------------------
-
-    // $cmd = $pdo->prepare("UPDATE ALUNO SET nome = :e WHERE nome = :n");
-    // $cmd->bindParam(":n", $nome, PDO::PARAM_STR);
-    // $cmd->bindParam(":e", $email, PDO::PARAM_STR);
-    // $cmd->execute();
-
-
-    //  -------------------- Select -------------------------------
-
-    // $cmd = $pdo->prepare("SELECT * FROM ALUNO");
-    // $cmd->execute();
-    // $result = $cmd ->fetchAll(PDO::FETCH_ASSOC);
-
-
-    // echo "<pre>";
-    // print_r($result);
-    // echo "</pre>";
-
-
 }
+
+
+
+
+
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    if (isset($_POST['id_up']) && !empty($_POST['id_up'])) {
+        // ---------------ATUALIZAR REGISTRO EXISTENTE------------------
+        $id_up = addslashes($_POST['id_up']);
+        $nome = addslashes($_POST['name']);
+        $email = addslashes($_POST['email']);
+
+        if (!empty($nome) && !empty($email)) {
+            $aluno->editarAluno($id_up, $nome, $email);
+            echo "
+                <script type='text/javascript'>
+                    window.location.href = 'form.php';
+                </script>
+            ";
+        } else {
+            echo "Preencha todos os campos";
+        }
+    } elseif (isset($_POST['name']) && !empty($_POST['email'])) {
+        // ---------------INSERIR NOVO REGISTRO ------------------
+        $nome = addslashes($_POST['name']);
+        $email = addslashes($_POST['email']);
+
+        if (!empty($nome) && !empty($email)) {
+            $aluno->inserirAluno($nome, $email);
+            echo "
+                <script type='text/javascript'>
+                    window.location.href = 'form.php';
+                </script>
+            ";
+        } else {
+            echo "Preencha todos os campos";
+        }
+    }
+}
+
+
+
+// ---------------------- Insert ----------------------------
+
+// try {
+//     $ras = $pdo->prepare('INSERT INTO ALUNO(nome, email) VALUES (:n, :e)');
+
+//     $ras->bindParam(':n', $nome);
+//     $ras->bindValue(':e', $email);
+
+//     $ras->execute();
+// } catch (PDOException $e) {
+//     echo "Erro ao inserir dados: " . $e->getMessage();
+// } catch (Exception $e) {
+//     echo "Erro genérico " . $e->getMessage();
+// }
+
+
+
+// --------------------- Delete -------------------------------
+
+// if  (isset($_GET["id"])) {
+//     $idAluno = addslashes( $_GET["id"]);
+//     $aluno->excluirAluno($idAluno);
+// }  
+
+// try {
+//     $cmd = $pdo->prepare("DELETE FROM ALUNO WHERE nome = :n");
+//     $cmd->bindParam(":n", $nome);
+//     $cmd->execute();
+//     echo"$nome Deletado(a)";
+// }
+
+// catch (PDOException $e) {
+//     echo "Erro ao deletar ". $e->getMessage();
+//     exit();
+// }
+
+// catch (Exception $e) {
+//     echo "Erro genérico ". $e->getMessage();
+// }
+
+
+// --------------------- Update --------------------------------
+
+// $cmd = $pdo->prepare("UPDATE ALUNO SET nome = :e WHERE nome = :n");
+// $cmd->bindParam(":n", $nome, PDO::PARAM_STR);
+// $cmd->bindParam(":e", $email, PDO::PARAM_STR);
+// $cmd->execute();
+
+
+//  -------------------- Select -------------------------------
+
+// $cmd = $pdo->prepare("SELECT * FROM ALUNO");
+// $cmd->execute();
+// $result = $cmd ->fetchAll(PDO::FETCH_ASSOC);
+
+
+// echo "<pre>";
+// print_r($result);
+// echo "</pre>";
+
+
+
 ?>
