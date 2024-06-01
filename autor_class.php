@@ -33,6 +33,30 @@ class Aluno
         }
     }
 
+    public function totalAlunos() {
+        try {
+            $cmd = $this->pdo->query("SELECT COUNT(*) AS TotalAutores FROM Autor");
+            $cmd->execute();
+            $res = $cmd->fetch(PDO::FETCH_ASSOC);
+
+            if(isset($res['TotalAutores']) && $res['TotalAutores'] == 0) {
+                return "nenhum autor encontrado";
+            }
+
+            if(isset($res['TotalAutores'])) {
+                return $res['TotalAutores'];
+            } else {
+                return "Erro ao buscar autores";
+            }
+        } catch (PDOException $e) {
+            echo "Erro no BD " . $e->getMessage();
+            exit();
+        } catch (Exception $e) {
+            echo "Erro genérico " . $e->getMessage();
+            exit();
+        }
+    }
+
     public function inserirAluno($nome, $email)
     {
         if ($nome === "" || $email === "") {

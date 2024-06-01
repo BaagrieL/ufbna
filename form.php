@@ -34,6 +34,11 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
                                                             } ?>">
                 <input class="btn btn-primary" type="submit" value="enviar">
             </form>
+
+            <div class="relatorio form-control">
+                <h2>relatório</h2>
+                <p>Total de Autores: <?php echo "<strong>". $aluno->totalAlunos(). "</strong>" ?> </p>
+            </div>
         </div>
         <div class="direita">
             <table class="table table-striped table-hover">
@@ -216,8 +221,6 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['ids'])) {
 
 
 
-
-
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
     if (isset($_POST['id_up']) && !empty($_POST['id_up'])) {
         // ---------------ATUALIZAR REGISTRO EXISTENTE------------------
@@ -252,69 +255,4 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
         }
     }
 }
-
-
-
-// ---------------------- Insert ----------------------------
-
-// try {
-//     $ras = $pdo->prepare('INSERT INTO ALUNO(nome, email) VALUES (:n, :e)');
-
-//     $ras->bindParam(':n', $nome);
-//     $ras->bindValue(':e', $email);
-
-//     $ras->execute();
-// } catch (PDOException $e) {
-//     echo "Erro ao inserir dados: " . $e->getMessage();
-// } catch (Exception $e) {
-//     echo "Erro genérico " . $e->getMessage();
-// }
-
-
-
-// --------------------- Delete -------------------------------
-
-// if  (isset($_GET["id"])) {
-//     $idAluno = addslashes( $_GET["id"]);
-//     $aluno->excluirAluno($idAluno);
-// }  
-
-// try {
-//     $cmd = $pdo->prepare("DELETE FROM ALUNO WHERE nome = :n");
-//     $cmd->bindParam(":n", $nome);
-//     $cmd->execute();
-//     echo"$nome Deletado(a)";
-// }
-
-// catch (PDOException $e) {
-//     echo "Erro ao deletar ". $e->getMessage();
-//     exit();
-// }
-
-// catch (Exception $e) {
-//     echo "Erro genérico ". $e->getMessage();
-// }
-
-
-// --------------------- Update --------------------------------
-
-// $cmd = $pdo->prepare("UPDATE ALUNO SET nome = :e WHERE nome = :n");
-// $cmd->bindParam(":n", $nome, PDO::PARAM_STR);
-// $cmd->bindParam(":e", $email, PDO::PARAM_STR);
-// $cmd->execute();
-
-
-//  -------------------- Select -------------------------------
-
-// $cmd = $pdo->prepare("SELECT * FROM ALUNO");
-// $cmd->execute();
-// $result = $cmd ->fetchAll(PDO::FETCH_ASSOC);
-
-
-// echo "<pre>";
-// print_r($result);
-// echo "</pre>";
-
-
-
 ?>
