@@ -17,6 +17,7 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 <body>
 
     <main>
+        
         <div class="esquerda">
             <form action="form.php" method="POST" class="form-select">
                 <div class="input-group mb-3">
@@ -29,6 +30,7 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
                 <input class="btn btn-primary" type="submit" value="enviar">
             </form>
         </div>
+
         <div class="direita">
             <table class="table table-striped table-hover">
                 <thead>
@@ -128,17 +130,19 @@ if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['id'])) {
 // ------------------EDITAR----------------------
 if(isset($_GET['id_up']) && !empty($_GET['id_up'])){
     $id_up = addslashes($_GET['id_up']);
-    $nome = addslashes($_POST['nome']);
-    $email = addslashes($_POST['email']);
+    $nome_up = addslashes($_POST['nome']);
+    $email_up = addslashes($_POST['email']);
 
     if (!empty($nome) && !empty($email)) { 
-        $aluno->editarAluno($id_up ,$nome, $email);
-        echo "
-            <script type='text/javascript'>
-                    window.location.href = 'form.php';
-            </script>
-            ";
-        
+        if($aluno->editarAluno($id_up, $nome_up, $email_up)){
+
+            echo "
+                <script type='text/javascript'>
+                        window.location.href = 'form.php';
+                </script>
+                ";
+            
+        }
     } else {
         echo "Preencha todos os campos";
     } 
@@ -146,7 +150,7 @@ if(isset($_GET['id_up']) && !empty($_GET['id_up'])){
 }
 
 // ------------------INSERIR----------------------
-if ($_SERVER['REQUEST_METHOD'] === "POST") {
+if ($_SERVER['REQUEST_METHOD'] === "POST" && isset($_POST['name'])) {
     $nome = $_POST['name'];
     $email = $_POST['email'];
 
