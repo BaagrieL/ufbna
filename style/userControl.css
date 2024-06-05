@@ -3,8 +3,21 @@ main {
 }
 
 .esquerda {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
     width: 25%;
     padding: 20px;
+}
+
+.relatorio {
+    min-height: 300px;
+    padding: 10px;
+
+}
+
+.relatorio > h2 {
+    text-align: center;
 }
 
 /* Estilo para a div da direita */
