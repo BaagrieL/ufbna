@@ -17,6 +17,7 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
 <body>
 
     <main>
+        
         <div class="esquerda">
             <form action="form.php" method="POST" class="form-control">
                 <div class="input-group mb-3">
@@ -40,6 +41,7 @@ $aluno = new Aluno("UFBNA", "localhost", "root", "123456");
                 <p>Total de Autores: <?php echo "<strong>". $aluno->totalAlunos(). "</strong>" ?> </p>
             </div>
         </div>
+
         <div class="direita">
             <table class="table table-striped table-hover">
                 <thead>
